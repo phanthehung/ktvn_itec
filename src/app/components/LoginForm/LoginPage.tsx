@@ -1,45 +1,53 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { Button, Col, Row, Alert } from 'reactstrap';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
+
+
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+//The AvForm component wraps reactstrap's form to add context
+//that the other Av components know about to help share validation state
 import qs from 'qs';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash'; //thư viện JavaScript mạnh mẽ dùng để xử lý Array, Object, Function, Collection ..v.v
 import { Redirect } from 'react-router-dom';
 import { AnyARecord } from 'dns';
-import { checkLogin } from '../../../store/actions';
+import { MainLayout } from 'app/containers/MainLayout';
 
+// import { checkLogin } from '../../../store/actions';
+import "./scss/loginPage.scss";
 
 interface LoginInfo {
   username: string;
   password: string | number;
+  href?: string;
 }
-export default function LoginPage (props) {
+export function LoginPage(props) {
   const requestParams: LoginInfo = qs.parse(props.location.search, {
     ignoreQueryPrefix: true,
   });
   const [{ username, password }, setCredentials] = useState<LoginInfo>({
     username: '',
     password: '',
+    href: '',
   });
 
   const login = (event: React.FormEvent, value: any) => {
     event.preventDefault();
     console.debug({ value }, { username }, { password });
-    // const response = await onLogin({
-    //   username,
-    //   password,
-    // });
   };
+
   if (
     !isEmpty(requestParams) &&
     !isEmpty(requestParams.username) &&
     !isEmpty(requestParams.password)
   ) {
     console.debug('in redirect ', { props }, { requestParams });
-    return <Redirect to="/dashboard" />;
+    return <Redirect to= '/dashboard' />;
   }
 
-
-  
   return (
     <React.Fragment>
       <div className="wrapper">
@@ -62,14 +70,14 @@ export default function LoginPage (props) {
                   console.debug('invalid', data);
                 }}
               >
-               <div className="login-form-body">
-                {/* {this.props.user && (
+                <div className="login-form-body">
+                  {props.user && (
                     <Alert color="success">Your Login is successfull.</Alert>
                   )}
 
-                  {this.props.loginError && (
+                  {props.loginError && (
                     <Alert color="danger">{this.props.loginError}</Alert>
-                  )} */}
+                  )} 
 
                   <div>
                     <AvField
@@ -94,18 +102,17 @@ export default function LoginPage (props) {
                   </div>
 
                   <div className="submit-btn-area">
-                    <Button
+                    <a 
+                      type="submit"
                       color="primary"
                       className="btn btn-primary"
-                      type="submit"
-                    >
-                      Log In <i className="ti-arrow-right"></i>
-                    </Button>
-                 
+                      href = "/dashboard"
+                    > Login 
+                    </a>
                   </div>
-                  {/* <div className="form-footer text-center mt-5">
-                                            <p className="text-muted">Don't have Account? <Link to="/register"><i className="mdi mdi-lock"></i> Register Now</Link></p>
-                                        </div> */}
+                  <div className="form-footer text-center mt-5">
+                                            <p className="text-muted">Don't have Account? <Link to="/auth/register"><i className="mdi mdi-lock"></i> Register Now </Link></p>
+                                        </div>
                 </div>
               </AvForm>
             </div>
@@ -114,4 +121,8 @@ export default function LoginPage (props) {
       </div>
     </React.Fragment>
   );
-};
+}
+
+
+
+

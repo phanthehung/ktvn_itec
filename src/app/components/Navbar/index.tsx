@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -81,7 +83,7 @@ class Navbar extends React.Component<Props, State> {
   sidebarToggle = () => {
     const pageClass = document.querySelector('.page-container');
     pageClass.classList.toggle('sidebar_collapsed');
-  };
+  }
 
   toggleFullscreen() {
     console.debug('this function is called');
@@ -324,7 +326,7 @@ class Navbar extends React.Component<Props, State> {
                   >
                     <DropdownToggle className="btn dropdown-toggle" tag="div">
                       <span className="d_none_sm">
-                        Jessica <i className="ti-angle-down"></i>
+                        Quan <i className="ti-angle-down"></i>
                       </span>
                     </DropdownToggle>
                     <DropdownMenu className="dropdown-menu">
@@ -338,7 +340,7 @@ class Navbar extends React.Component<Props, State> {
                       <DropdownItem
                         tag="a"
                         className="text-danger"
-                        href="/logout"
+                        href="auth/login"
                       >
                         <i className="ti-power-off"></i>Logout
                       </DropdownItem>

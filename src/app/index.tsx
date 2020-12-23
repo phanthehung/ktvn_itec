@@ -1,23 +1,29 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  *
- * App
+ * App.tsx
  *
  * This component is the skeleton around the actual pages, and should only
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
-import * as React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 import { GlobalStyle } from 'styles/global-styles';
 import 'styles/scss/App.scss';
-import { HomePage } from './containers/HomePage/Loadable';
+// import { HomePage } from './containers/HomePage/Loadable';
 import { MainLayout } from 'app/containers/MainLayout';
 import { NotFoundPage } from './components/NotFoundPage/Loadable';
 import { AuthorizeContainer } from './containers/AuthorizeContainer/Loadable';
-import { LoginForm } from 'app/components/LoginForm';
-
+import { LoginForm } from './components/LoginForm'
+import DeclareListofWarehouse from './containers/DeclareListofWarehouse'
+import { ListWarehouse } from './containers/ListWarehouse/Loadable'
+import { InitialDeclaration } from './containers/InitialDeclaration/Loadable';
+import { RouteList } from './routes';
+// import Register from './components/LoginForm/Register';
 // import {Navbar} from './components/Navbar';
 
 export function App() {
@@ -30,22 +36,37 @@ export function App() {
         <meta name="description" content="A React Boilerplate application" />
       </Helmet>
 
-      <Switch>
-        <Route exact path="/" component={MainLayout} />
-        <Route exact path="/dashboard" component={HomePage} />
-
+      <>
         <Route
-          path="/auth"
-          render={({ match: { url } }) => (
-            <AuthorizeContainer>
-              <Route path={`${url}/login`} component={LoginForm} />
-            </AuthorizeContainer>
-          )}
-        />
+          path='/'
+          render={(props) => <MainLayout {...props}>
+            <RouteList {...props} />
+          </MainLayout>}
+        >
+        </Route>
 
-        <Route component={NotFoundPage} />
-      </Switch>
+             
+        <Route
+          path="/auth"          
+          render={({ match: { url } }) => {
+            return(          
+            <AuthorizeContainer>
+              <Switch>
+              <Route exact path={`${url}/login`} component={LoginForm} />
+              <Route exact path={`${url}/register`} component={LoginForm} />
+              </Switch>
+              
+            </AuthorizeContainer> 
+          )}}
+        />
+          <Route exact path='/404' component={NotFoundPage} />
+        {/* <Route component={NotFoundPage} /> */}
+      </>
       <GlobalStyle />
+      {/* <Route component={ListWarehouse} /> */}
+
+      {/* <Route component={InitialDeclaration} /> */}
+
     </BrowserRouter>
   );
 }
