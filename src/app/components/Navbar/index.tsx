@@ -10,8 +10,27 @@ import {
   Row,
 } from 'reactstrap';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { actions} from 'app/containers/AuthorizeContainer/slice';
+import {connect,ConnectedProps }from 'react-redux'
 
-interface Props {}
+
+interface reduxState {
+  test:string;
+}
+const mapDispatch = dispatch => { 
+  return {
+        clearLoginInfo : ()=>dispatch(actions.clearLoginInfo(false)),
+  }
+}
+const mapState =  (state: reduxState) => ({
+  test:''
+})
+const connector = connect(mapState, mapDispatch);
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+interface Props {
+  clearLoginInfo:Function;
+}
 
 interface State {
   create_menu: boolean;
@@ -112,6 +131,8 @@ class Navbar extends React.Component<Props, State> {
   }
 
   render() {
+    console.log(this.props);
+    const {clearLoginInfo} = this.props;
     return (
       <React.Fragment>
         <div className="header-area">
@@ -340,9 +361,8 @@ class Navbar extends React.Component<Props, State> {
                       <DropdownItem
                         tag="a"
                         className="text-danger"
-                        href="auth/login"
                       >
-                        <i className="ti-power-off"></i>Logout
+                        <a onClick={(e)=>{e.preventDefault();clearLoginInfo(false)}}><i className="ti-power-off"></i>Logout</a>
                       </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
@@ -356,4 +376,5 @@ class Navbar extends React.Component<Props, State> {
   }
 }
 
-export default Navbar;
+
+export default connector (Navbar);

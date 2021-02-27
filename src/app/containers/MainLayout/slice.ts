@@ -3,13 +3,25 @@ import { createSlice } from 'utils/@reduxjs/toolkit';
 import { ContainerState } from './types';
 
 // The initial state of the MainLayout container
-export const initialState: ContainerState = {};
+export const initialState: ContainerState = {
+  loading: false,
+};
+
+export interface Responded {
+  loading: false;
+}
 
 const mainLayoutSlice = createSlice({
   name: 'mainLayout',
   initialState,
   reducers: {
-    someAction(state, action: PayloadAction<any>) {},
+    setData(state: ContainerState, action: PayloadAction<any>) {
+      const { payload } = action;
+      return {
+        ...state,
+        ...payload,
+      };
+    },
   },
 });
 
